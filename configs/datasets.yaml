@@ -1,0 +1,105 @@
+# Dataset configurations
+
+datasets:
+
+  squad_mini:
+    name: "SQuAD Mini (ExtractBench)"
+    type: "extractbench"
+    path: "./data/raw/resume/pdf+gold"
+    format: "json"
+    input_field: "context"
+
+    fields_to_extract:
+      - name: "answer"
+        type: "string_semantic"
+        required: true
+
+      - name: "entity"
+        type: "string_exact"
+        required: false
+
+    description: "Mini QA extraction benchmark"
+
+
+  invoice_bench:
+    name: "Invoice Extraction Benchmark"
+    type: "extractbench"
+    path: "./data/raw/invoice_bench.json"
+    format: "json"
+    input_field: "document_text"
+
+    fields_to_extract:
+      - name: "invoice_number"
+        type: "string_exact"
+        required: true
+
+      - name: "total_amount"
+        type: "number_tolerance"
+        tolerance: 0.01
+        required: true
+
+      - name: "line_items"
+        type: "array_llm"
+        required: false
+
+      - name: "vendor_name"
+        type: "string_semantic"
+        required: true
+
+      - name: "invoice_date"
+        type: "string_exact"
+        required: true
+
+    description: "Invoice document field extraction"
+
+
+  resume_bench:
+    name: "Resume Extraction Benchmark"
+    type: "extractbench"
+
+    path: "./data/raw/resume/pdf+gold"
+
+    format: "pdf_gold"
+
+    input_field: "input_text"
+
+    fields_to_extract:
+
+      - name: "full_name"
+        type: "string_exact"
+        required: true
+
+      - name: "education"
+        type: "array_llm"
+        required: false
+
+      - name: "research_areas"
+        type: "array_llm"
+        required: false
+
+    description: "Resume structured extraction benchmark"
+
+
+  synthetic_mini:
+    name: "Synthetic Mini Benchmark"
+    type: "synthetic"
+    path: null
+    format: "generated"
+    num_samples: 50
+    input_field: "text"
+
+    fields_to_extract:
+      - name: "title"
+        type: "string_exact"
+        required: true
+
+      - name: "price"
+        type: "number_tolerance"
+        tolerance: 0.05
+        required: true
+
+      - name: "tags"
+        type: "array_llm"
+        required: false
+
+    description: "Synthetically generated benchmark for testing"

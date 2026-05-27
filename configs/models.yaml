@@ -1,0 +1,57 @@
+# Model configurations for Ollama
+models:
+
+  mistral:
+    name: "mistral"
+    ollama_model: "mistral"
+    temperature: 0.0
+    top_p: 0.9
+    max_tokens: 2048
+    context_window: 8192
+    tokens_per_second_estimate: 30
+    cost_per_1k_tokens: 0.0  # local, no cost
+    description: "Mistral 7B - fast and capable"
+
+  llama3:
+    name: "llama3"
+    ollama_model: "llama3"
+    temperature: 0.0
+    top_p: 0.9
+    max_tokens: 2048
+    context_window: 8192
+    tokens_per_second_estimate: 25
+    cost_per_1k_tokens: 0.0
+    description: "Meta LLaMA 3 8B"
+
+  qwen2_5:
+    name: "qwen2.5"
+    ollama_model: "qwen2.5"
+    temperature: 0.0
+    top_p: 0.9
+    max_tokens: 2048
+    context_window: 8192
+    tokens_per_second_estimate: 28
+    cost_per_1k_tokens: 0.0
+    description: "Qwen 2.5 - strong structured output"
+
+  mistral_optimizer:
+    name: "mistral_optimizer"
+    ollama_model: "mistral"
+    temperature: 0.7       # higher temp for creative mutations
+    top_p: 0.95
+    max_tokens: 1024
+    context_window: 8192
+    tokens_per_second_estimate: 30
+    cost_per_1k_tokens: 0.0
+    description: "Mistral used as the prompt mutator"
+
+  llama3_optimizer:
+    name: "llama3_optimizer"
+    ollama_model: "llama3"
+    temperature: 0.7
+    top_p: 0.95
+    max_tokens: 1024
+    context_window: 8192
+    tokens_per_second_estimate: 25
+    cost_per_1k_tokens: 0.0
+    description: "LLaMA3 used as the prompt mutator"

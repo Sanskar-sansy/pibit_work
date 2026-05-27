@@ -1,0 +1,77 @@
+# Optimizer strategy configurations
+optimizer:
+
+  greedy:
+    strategy: "greedy"
+    max_iterations: 10
+    budget: 50
+    acceptance: "strict"       # strict | simulated_annealing
+    mutations_per_iter: 3
+    top_k: 1
+    min_improvement: 0.005     # minimum delta to accept
+    mutation_strategies:
+      - instruction_rewrite
+      - output_format_tighten
+      - verbosity_reduce
+      - hallucination_suppress
+    description: "Simple greedy: always pick best mutation"
+
+  beam:
+    strategy: "beam"
+    max_iterations: 8
+    budget: 80
+    beam_width: 3
+    acceptance: "strict"
+    mutations_per_iter: 5
+    min_improvement: 0.002
+    mutation_strategies:
+      - instruction_rewrite
+      - output_format_tighten
+      - few_shot_insert
+      - chain_of_thought_toggle
+      - schema_aware_refine
+      - field_constraint_add
+      - verbosity_reduce
+      - hallucination_suppress
+    description: "Beam search: maintain top-k candidates"
+
+  population:
+    strategy: "population"
+    max_iterations: 6
+    budget: 120
+    population_size: 5
+    elite_size: 2
+    acceptance: "simulated_annealing"
+    temperature: 1.0
+    cooling_rate: 0.85
+    mutations_per_iter: 3
+    mutation_strategies:
+      - instruction_rewrite
+      - output_format_tighten
+      - few_shot_insert
+      - chain_of_thought_toggle
+      - schema_aware_refine
+      - field_constraint_add
+      - verbosity_reduce
+      - hallucination_suppress
+    description: "Population-based: evolutionary prompt search"
+
+# Mutation strategy parameters
+mutation_params:
+  few_shot_insert:
+    num_examples: 2          # how many few-shot examples to inject
+    example_source: "train"  # from training data
+  chain_of_thought_toggle:
+    cot_phrase: "Let's think step by step before extracting."
+  verbosity_reduce:
+    target_reduction: 0.3    # try to cut 30% of words
+  hallucination_suppress:
+    suppress_phrases:
+      - "If information is not available, make your best guess."
+      - "Fill in any missing fields with plausible values."
+    add_phrases:
+      - "Only extract information explicitly stated in the text."
+      - "If a field is not found, return null."
+  schema_aware_refine:
+    add_type_hints: true
+    add_format_examples: true

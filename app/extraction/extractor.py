@@ -64,10 +64,10 @@ class Extractor:
             if cached is not None:
                 logger.debug(f"Cache hit for sample {sample.id}")
                 
-                print("\nCACHED RAW MODEL OUTPUT:\n")
+                # print("\nCACHED RAW MODEL OUTPUT:\n")
                 print(cached["raw_output"])
 
-                print("\nCACHED PARSED OUTPUT:\n")
+                # print("\nCACHED PARSED OUTPUT:\n")
                 print(cached.get("parsed"))
 
                 return ExtractionResult(

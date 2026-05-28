@@ -99,7 +99,7 @@ def run_optimize(
     )
 
     # Persistence
-    cache = ResponseCache(cfg.cache.dir) if cfg.cache.enabled else None
+    cache = None
     db = DatabaseManager(url=cfg.database.url)
     cp_manager = CheckpointManager(db)
 

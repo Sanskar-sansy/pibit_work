@@ -31,7 +31,7 @@ pipeline:
   dataset: "resume_bench"  # key from datasets.yaml
   model: "llama3"       # key from models.yaml
   optimizer: "beam"      # key from optimizer.yaml
-  max_budget: 3        # max LLM calls for optimization
-  validation_split: 0.2
-  test_split: 0.1
-  batch_size: 5          # samples per evaluation round
+  max_budget: 10   # max LLM calls for optimization
+  validation_split: 0.5
+  test_split: 0.0
+  batch_size: 2         # samples per evaluation round

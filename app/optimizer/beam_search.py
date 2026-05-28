@@ -21,6 +21,9 @@ from app.persistence.database import DatabaseManager
 from app.scoring.evaluator import Evaluator
 from app.utils.hashing import hash_string, short_hash
 from app.utils.logging_utils import get_logger
+# from app.reporting.plots import OptimizationPlotter
+from app.reporting.plots import plot_score_curve
+
 
 logger = get_logger(__name__)
 
@@ -99,6 +102,7 @@ class BeamSearchOptimizer:
             Tuple of (best_prompt_text, trajectory).
         """
         samples = val_split.samples
+        score_history: list[float] = []
         samples_by_id = {s.id: s for s in samples}
         train_samples = train_split.samples if train_split else []
 
@@ -125,6 +129,7 @@ class BeamSearchOptimizer:
         else:
             logger.info(f"Starting beam search (width={self._beam_width}) from seed prompt")
             seed_score = self._evaluate_prompt(seed_prompt, samples, samples_by_id)
+            score_history.append(seed_score)
             beam = [(seed_prompt, seed_score)]
             self._record(0, seed_prompt, None, seed_score, accepted=True)
             start_iter = 1
@@ -192,6 +197,8 @@ class BeamSearchOptimizer:
             ]
             all_combined.sort(key=lambda x: x[1], reverse=True)
             beam = [(p, s) for p, s, _ in all_combined[:self._beam_width]]
+            best_iteration_score = beam[0][1]
+            score_history.append(best_iteration_score)
 
             logger.info(
                 f"[Beam] Top scores after expansion: "
@@ -199,10 +206,30 @@ class BeamSearchOptimizer:
             )
 
             # Checkpoint
-            self._save_checkpoint(iteration, beam)
+        self._save_checkpoint(iteration, beam)
+
+        trajectory_entries = []
+
+        for entry in self._trajectory.entries:
+
+            trajectory_entries.append({
+                "iteration": entry.iteration,
+                "score": entry.score,
+                "accepted": entry.accepted,
+            })
+
+        plot_path = plot_score_curve(
+            trajectory_entries,
+            "reports/score_curve.png",
+            title="Beam Search Optimization"
+        )
+
+        logger.info(f"Saved optimization plot to: {plot_path}")
 
         best_prompt, best_score = beam[0] if beam else (seed_prompt, 0.0)
+
         logger.info(f"[Beam] Done. Best F1={best_score:.4f}")
+
         return best_prompt, self._trajectory
 
     # ------------------------------------------------------------------

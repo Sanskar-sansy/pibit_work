@@ -3,12 +3,12 @@ optimizer:
 
   greedy:
     strategy: "greedy"
-    max_iterations: 10
-    budget: 50
+    max_iterations: 3
+    budget: 10
     acceptance: "strict"       # strict | simulated_annealing
-    mutations_per_iter: 3
+    mutations_per_iter: 2
     top_k: 1
-    min_improvement: 0.005     # minimum delta to accept
+    min_improvement: 0.001    # minimum delta to accept
     mutation_strategies:
       - instruction_rewrite
       - output_format_tighten
@@ -18,33 +18,33 @@ optimizer:
 
   beam:
     strategy: "beam"
-    max_iterations: 8
-    budget: 80
-    beam_width: 3
+    max_iterations: 3
+    budget: 20
+    beam_width: 2
     acceptance: "strict"
     mutations_per_iter: 5
     min_improvement: 0.002
     mutation_strategies:
       - instruction_rewrite
       - output_format_tighten
-      - few_shot_insert
-      - chain_of_thought_toggle
+      # - few_shot_insert
+      # - chain_of_thought_toggle
       - schema_aware_refine
-      - field_constraint_add
-      - verbosity_reduce
+      # - field_constraint_add
+      # - verbosity_reduce
       - hallucination_suppress
     description: "Beam search: maintain top-k candidates"
 
   population:
     strategy: "population"
     max_iterations: 6
-    budget: 120
+    budget: 20
     population_size: 5
     elite_size: 2
     acceptance: "simulated_annealing"
     temperature: 1.0
     cooling_rate: 0.85
-    mutations_per_iter: 3
+    mutations_per_iter: 2
     mutation_strategies:
       - instruction_rewrite
       - output_format_tighten

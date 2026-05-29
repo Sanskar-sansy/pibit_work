@@ -511,7 +511,7 @@ pytest tests/ --cov=app --cov-report=html
 # Demo Video
 
 Demo Video Link:
-[(Add YouTube Unlisted or Google Drive link here)](https://drive.google.com/file/d/1WoX15IlmhX_NUW3gFIbIV8XfAfXBtcap/view?usp=drive_link)
+(https://drive.google.com/file/d/1WoX15IlmhX_NUW3gFIbIV8XfAfXBtcap/view?usp=drive_link)
 
 ---
 
